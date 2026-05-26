@@ -1,41 +1,631 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khadija Shafqat — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Syne:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080C10;
+    --bg2: #0D1218;
+    --bg3: #111720;
+    --blue: #3A8FD6;
+    --blue-glow: rgba(58,143,214,0.18);
+    --blue-dim: rgba(58,143,214,0.08);
+    --green: #2DBF7E;
+    --green-glow: rgba(45,191,126,0.15);
+    --green-dim: rgba(45,191,126,0.07);
+    --gold: #C9954A;
+    --text: #E8EDF2;
+    --muted: #7A8899;
+    --faint: #2A3444;
+    --border: rgba(255,255,255,0.06);
+    --border-blue: rgba(58,143,214,0.25);
+    --border-green: rgba(45,191,126,0.22);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* KS LOGO */
+  .nav-logo {
+    text-decoration: none;
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    position: relative;
+  }
+  .ks-svg { width: 44px; height: 44px; }
+
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    font-size: 12px; font-weight: 500; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 3rem 4rem;
+    position: relative; overflow: hidden; z-index: 1;
+  }
+  .hero-orb1 {
+    position: absolute; top: 10%; right: 5%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,143,214,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-orb2 {
+    position: absolute; bottom: 5%; left: -5%;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(45,191,126,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 750px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 1.8rem;
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    line-height: 1.0; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .hero h1 .accent { color: var(--blue); font-style: italic; }
+  .hero h1 .line2 { display: block; color: var(--green); }
+  .hero-sub {
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin: 1.2rem 0 2rem;
+  }
+  .hero-desc {
+    font-size: 15px; line-height: 1.8; color: var(--muted);
+    max-width: 500px; margin-bottom: 2.5rem;
+    border-left: 2px solid var(--faint); padding-left: 1.2rem;
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-glow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 30px; border-radius: 4px;
+    font-size: 12px; font-weight: 500; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-blue {
+    background: var(--blue-dim); color: var(--blue);
+    border: 1px solid var(--border-blue);
+  }
+  .btn-blue:hover {
+    background: rgba(58,143,214,0.18);
+    box-shadow: 0 0 20px rgba(58,143,214,0.25);
+  }
+  .btn-green {
+    background: var(--green-dim); color: var(--green);
+    border: 1px solid var(--border-green);
+  }
+  .btn-green:hover {
+    background: rgba(45,191,126,0.15);
+    box-shadow: 0 0 20px rgba(45,191,126,0.2);
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 600; line-height: 1;
+    color: var(--blue);
+  }
+  .stat-label { font-size: 11px; letter-spacing: 1px; color: var(--muted); margin-top: 4px; text-transform: uppercase; }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; position: relative; z-index: 1; }
+  .section-header { margin-bottom: 3.5rem; }
+  .section-tag {
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 0.6rem; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 600; color: var(--text);
+    line-height: 1.1;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--bg2); }
+  .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+  .skill-group {
+    background: var(--bg3); border-radius: 8px;
+    padding: 1.4rem; border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .skill-group:hover { border-color: var(--border-blue); }
+  .skill-group-title {
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.5px;
+    padding: 4px 12px; border-radius: 3px;
+    background: var(--blue-dim); color: var(--blue);
+    border: 1px solid rgba(58,143,214,0.2);
+  }
+  .pill.g { background: var(--green-dim); color: var(--green); border-color: rgba(45,191,126,0.2); }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .proj-card {
+    background: var(--bg2); border-radius: 10px;
+    border: 1px solid var(--border); padding: 1.6rem;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .proj-card:hover { transform: translateY(-5px); border-color: var(--border-blue); }
+  .proj-card:hover .proj-glow { opacity: 1; }
+  .proj-glow {
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), var(--green), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .proj-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 600;
+    color: var(--faint); line-height: 1;
+    margin-bottom: 0.5rem; user-select: none;
+  }
+  .proj-name {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    margin-bottom: 0.6rem; letter-spacing: 0.3px;
+  }
+  .proj-desc {
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+    margin-bottom: 1.2rem; flex: 1;
+  }
+  .proj-footer { display: flex; align-items: center; justify-content: space-between; }
+  .proj-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.5px;
+    padding: 3px 9px; border-radius: 2px;
+  }
+  .tag.b { background: var(--blue-dim); color: var(--blue); }
+  .tag.g { background: var(--green-dim); color: var(--green); }
+  .tag.gold { background: rgba(201,149,74,0.1); color: var(--gold); }
+  .proj-link {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg3); color: var(--muted); border: 1px solid var(--border);
+    text-decoration: none; font-size: 13px; flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .proj-link:hover { border-color: var(--blue); color: var(--blue); box-shadow: 0 0 10px var(--blue-glow); }
+
+  /* CERT */
+  #certificates { background: var(--bg2); }
+  .cert-card {
+    display: flex; gap: 2rem; align-items: flex-start;
+    background: var(--bg3); border-radius: 12px;
+    border: 1px solid var(--border-blue);
+    padding: 2rem; max-width: 720px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 0 40px rgba(58,143,214,0.07);
+  }
+  .cert-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+  }
+  .cert-logo {
+    width: 56px; height: 56px; border-radius: 10px;
+    background: #000; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+    border: 1px solid var(--border);
+    font-size: 1.5rem; font-weight: 700; color: #fff;
+    font-family: 'Syne', sans-serif;
+  }
+  .cert-issuer { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 5px; }
+  .cert-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: 4px;
+  }
+  .cert-date { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .cert-courses { display: flex; flex-wrap: wrap; gap: 7px; }
+  .cert-course {
+    font-size: 11px; padding: 4px 11px; border-radius: 3px;
+    background: var(--blue-dim); color: var(--blue);
+    border: 1px solid rgba(58,143,214,0.15);
+  }
+
+  /* CONTACT */
+  .contact-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .contact-card {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.4rem 1.8rem;
+    text-decoration: none; flex: 1; min-width: 220px;
+    transition: all 0.2s;
+  }
+  .contact-card:hover { border-color: var(--border-green); box-shadow: 0 0 20px var(--green-glow); }
+  .contact-icon {
+    width: 42px; height: 42px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    background: var(--bg3); border: 1px solid var(--border);
+  }
+  .contact-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .contact-value { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  footer {
+    text-align: center; padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--muted); letter-spacing: 0.5px;
+    position: relative; z-index: 1;
+  }
+  footer span { color: var(--blue); }
+
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.4rem; }
+    .nav-links { display: none; }
+    .hero, section { padding-left: 1.4rem; padding-right: 1.4rem; }
+    .hero-stats { gap: 1.8rem; flex-wrap: wrap; }
+    .cert-card { flex-direction: column; }
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <!-- Card 1 -->
-    <div class="card">
-      <div class="left">
-        <img src="img/profile.jpg" alt="Profile Image" class="profile-img" />
-        <h2>Khadija Shafqat</h2>
-        <p>Contact No: 0880-773303</p>
-        <p>Email: khadijashafqat@gmail.com</p>
-        <br>
-        <a style = "color: rgb(181, 181, 219); text-decoration: underline;" href="https://github.com/hadice-20">GitHub Profile</a>
-      
-        
+
+<nav>
+  <a href="#" class="nav-logo" aria-label="Khadija Shafqat">
+    <svg class="ks-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer hexagon ring -->
+      <polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="none" stroke="rgba(58,143,214,0.35)" stroke-width="0.8"/>
+      <!-- Inner hexagon -->
+      <polygon points="22,7 36,15 36,29 22,37 8,29 8,15" fill="none" stroke="rgba(45,191,126,0.25)" stroke-width="0.6"/>
+      <!-- Diagonal accent line -->
+      <line x1="8" y1="15" x2="36" y2="29" stroke="rgba(58,143,214,0.12)" stroke-width="0.5"/>
+      <!-- K letterform -->
+      <line x1="13" y1="13" x2="13" y2="31" stroke="#3A8FD6" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="13" y1="22" x2="22" y2="13" stroke="#3A8FD6" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="13" y1="22" x2="22" y2="31" stroke="#3A8FD6" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- S letterform -->
+      <path d="M26 14 Q33 14 33 19 Q33 23 26 23 Q21 23 21 28 Q21 32 28 32" fill="none" stroke="#2DBF7E" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Glow dot top-right -->
+      <circle cx="37" cy="10" r="1.5" fill="#2DBF7E" opacity="0.7"/>
+      <circle cx="37" cy="10" r="3" fill="#2DBF7E" opacity="0.15"/>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certificates">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="dot"></span> Available for opportunities</div>
+    <h1>Khadija<span class="line2">Shafqat<span class="accent">.</span></span></h1>
+    <p class="hero-sub">BS Computer Science &nbsp;·&nbsp; 6th Semester &nbsp;·&nbsp; Builder</p>
+    <p class="hero-desc">
+      I build full-stack web apps, mobile experiences, hardware systems, and real businesses. From databases to design — I turn ideas into things that actually work.
+    </p>
+    <div class="hero-btns">
+      <a href="https://github.com/hadice-20" target="_blank" class="btn-glow btn-blue">⭐ GitHub</a>
+      <a href="#projects" class="btn-glow btn-green">View Work →</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">13+</div><div class="stat-label">Projects</div></div>
+      <div><div class="stat-num">6th</div><div class="stat-label">Semester</div></div>
+      <div><div class="stat-num">1</div><div class="stat-label">Meta Cert</div></div>
+      <div><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-up">
+    <span class="section-tag">What I know</span>
+    <div class="section-title">Skills & Technologies</div>
+  </div>
+  <div class="skills-container fade-up">
+    <div class="skill-group">
+      <div class="skill-group-title">Languages</div>
+      <div class="skill-pills">
+        <span class="pill">HTML</span><span class="pill">CSS</span>
+        <span class="pill">JavaScript</span><span class="pill">C / C++</span>
+        <span class="pill">Python</span><span class="pill">SQL</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Frameworks</div>
+      <div class="skill-pills">
+        <span class="pill g">React</span><span class="pill g">React Native</span>
+        <span class="pill g">Bootstrap</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Tools & Concepts</div>
+      <div class="skill-pills">
+        <span class="pill g">Database Design</span><span class="pill g">OOP</span>
+        <span class="pill g">Parallel Computing</span>
+        <span class="pill g">Git / GitHub</span><span class="pill g">UX/UI Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-up">
+    <span class="section-tag">My Work</span>
+    <div class="section-title">Projects</div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">01</div>
+      <div class="proj-name">Royal Bliss</div>
+      <div class="proj-desc">Hotel management system where users can book rooms. Built with HTML, CSS, Bootstrap, JavaScript and full database connectivity.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">Bootstrap</span><span class="tag g">Database</span><span class="tag b">JS</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
       </div>
     </div>
 
-    <!-- Card 2 -->
-    <div class="card">
-      <div class="right">
-        <h3>About Me</h3>
-        <p>Hi there! I am Khadija Shafqat and I’m a web developer. I specialize in web design, frontend development, and branding.</p>
-        <h4>Skills:</h4>
-        <ul>
-          <li>HTML, CSS, JavaScript, Bootstrap</li>
-          <li>Responsive Web Design</li>
-          <li>UI/UX Design</li>
-        </ul>
-        </div>
-        
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">02</div>
+      <div class="proj-name">Coffee Shop Frontend</div>
+      <div class="proj-desc">A business showcase website for a coffee shop — warm, branded front-end design to highlight the menu and brand story.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">HTML/CSS</span><span class="tag b">JS</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">03</div>
+      <div class="proj-name">Fine Dine Experience</div>
+      <div class="proj-desc">Restaurant website with live table booking and full database connection — a polished dining reservation system.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">HTML/CSS</span><span class="tag g">Database</span><span class="tag b">JS</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">04</div>
+      <div class="proj-name">Beyond World</div>
+      <div class="proj-desc">An e-book showcase website with an immersive, clean UI — built to display and highlight digital books beautifully.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">HTML/CSS</span><span class="tag b">JS</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">05</div>
+      <div class="proj-name">Craftique</div>
+      <div class="proj-desc">Real entrepreneurship project — an online shop for handmade crochet products. Real business, real customers, real hustle. 💪</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag gold">Entrepreneurship</span><span class="tag g">E-commerce</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">06</div>
+      <div class="proj-name">Traffic Control System</div>
+      <div class="proj-desc">Hardware-based traffic management system in DLD — real physical components controlling signal logic circuits.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">DLD</span><span class="tag gold">Hardware</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">07</div>
+      <div class="proj-name">Little Learners</div>
+      <div class="proj-desc">Mobile app + website for Islamic education for kids — interactive games, quizzes & stories. Full database integration for progress tracking.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag g">Mobile App</span><span class="tag g">Database</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">08</div>
+      <div class="proj-name">Student Management System</div>
+      <div class="proj-desc">Student records system in C — handling academic data, grades, and information management from the ground up.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">C Language</span></div>
+        <a href="https://github.com/hadice-20" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">09</div>
+      <div class="proj-name">Little Lemon</div>
+      <div class="proj-desc">Meta React Native Capstone — a restaurant web app showcasing front-end development with React and clean UI design.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag g">React</span><span class="tag gold">Capstone</span></div>
+        <a href="https://github.com/hadice-20/Little-Lemon" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">10</div>
+      <div class="proj-name">Parallel Computing Project</div>
+      <div class="proj-desc">Exploring parallel processing and performance optimization using Python and Jupyter Notebook for efficient data computation.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag g">Python</span><span class="tag g">Jupyter</span></div>
+        <a href="https://github.com/hadice-20/Parallel-Project" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">11</div>
+      <div class="proj-name">Advance DBMS</div>
+      <div class="proj-desc">Advanced database management final project — schema design, complex queries, and efficient relational data handling.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag g">SQL</span><span class="tag g">Database</span></div>
+        <a href="https://github.com/hadice-20/Advance-DBMS" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">12</div>
+      <div class="proj-name">OOP Final Project</div>
+      <div class="proj-desc">Object-oriented programming principles in C++ — classes, inheritance, encapsulation, and polymorphism demonstrated end-to-end.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">C++</span><span class="tag b">OOP</span></div>
+        <a href="https://github.com/hadice-20/Object-oriented-Programming" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+    <div class="proj-card fade-up">
+      <div class="proj-glow"></div>
+      <div class="proj-num">13</div>
+      <div class="proj-name">Programming Fundamentals</div>
+      <div class="proj-desc">Core programming concepts final project — logic building, algorithms, and problem-solving fundamentals in C/C++.</div>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="tag b">C / C++</span><span class="tag b">Algorithms</span></div>
+        <a href="https://github.com/hadice-20/Programming-Fundamentals" target="_blank" class="proj-link">↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="section-header fade-up">
+    <span class="section-tag">Credentials</span>
+    <div class="section-title">Certificates</div>
+  </div>
+  <div class="cert-card fade-up">
+    <div class="cert-logo">M</div>
+    <div class="cert-info">
+      <div class="cert-issuer">Meta · Coursera Specialization</div>
+      <div class="cert-name">Meta React Native</div>
+      <div class="cert-date">Completed June 5, 2025 &nbsp;·&nbsp; 8 Courses</div>
+      <div class="cert-courses">
+        <span class="cert-course">Intro to Mobile Dev</span>
+        <span class="cert-course">JavaScript</span>
+        <span class="cert-course">Version Control</span>
+        <span class="cert-course">React Basics</span>
+        <span class="cert-course">React Native</span>
+        <span class="cert-course">Working with Data</span>
+        <span class="cert-course">UX/UI Design</span>
+        <span class="cert-course">Capstone App</span>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <span class="section-tag">Get in touch</span>
+    <div class="section-title">Contact</div>
+  </div>
+  <div class="contact-row fade-up">
+    <a href="mailto:khadijashafqat1378@gmail.com" class="contact-card">
+      <div class="contact-icon">📧</div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">khadijashafqat1378@gmail.com</div>
+      </div>
+    </a>
+    <a href="https://github.com/hadice-20" target="_blank" class="contact-card">
+      <div class="contact-icon">⭐</div>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">github.com/hadice-20</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  Crafted by <span>Khadija Shafqat</span> &nbsp;·&nbsp; BS Computer Science &nbsp;·&nbsp; 2025
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 90);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
